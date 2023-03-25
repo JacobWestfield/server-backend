@@ -13,8 +13,22 @@ const UserTable = ({
     selectedSort,
     onToggleBookMark,
     onDelete,
+    qualities,
     ...rest
 }) => {
+    /* на самом деле я не очень понял задание.
+    Как его понял я: мы "фетчим" с сервера все качества. Потом для каждого пользователя фильтруем качества. По новой структуре кода у пользователей качества содержат лишь айдишники, значит нам надо их сравнить с айдишниками качеств и вернуть сходные. Ниже функция, которую я разработал для фильтрации качеств. Глобальный провайдер качеств обёрнут вокруг switch, но я не уверен что это верно. Прошу указать на мои ошибки.
+С этим кодом всё работает: я изменяю в прямом эфире качества в приложении qualities и они меняются на основном
+    */
+    const getUserQuality = (qualities, user) => {
+        // eslint-disable-next-line
+        const newArrayOfQualities = qualities.filter(function (qual) {
+            for (const userQuality of user.qualities) {
+                if (userQuality === qual._id) return qual;
+            }
+        });
+        return newArrayOfQualities;
+    };
     const columns = {
         name: {
             path: "name",
@@ -25,7 +39,9 @@ const UserTable = ({
         },
         qualities: {
             name: "Качества",
-            component: (user) => <Qualities qualities={user.qualities} />
+            component: (user) => (
+                <Qualities qualities={getUserQuality(qualities, user)} />
+            )
         },
         professions: {
             name: "Профессия",
@@ -72,7 +88,8 @@ UserTable.propTypes = {
     onSort: PropTypes.func.isRequired,
     selectedSort: PropTypes.object.isRequired,
     onToggleBookMark: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired
+    onDelete: PropTypes.func.isRequired,
+    qualities: PropTypes.array
 };
 
 export default UserTable;
