@@ -8,10 +8,8 @@ import SearchStatus from "../../ui/searchStatus";
 import UserTable from "../../ui/usersTable";
 import _ from "lodash";
 import { useUser } from "../../../hooks/useUsers";
-import { useQualities } from "../../../hooks/useQualities";
 
 const UsersListPage = () => {
-    const { qualities } = useQualities();
     const { users } = useUser();
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
@@ -115,7 +113,6 @@ const UsersListPage = () => {
                     />
                     {count > 0 && (
                         <UserTable
-                            qualities={qualities}
                             users={usersCrop}
                             onSort={handleSort}
                             selectedSort={sortBy}
